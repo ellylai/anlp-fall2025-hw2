@@ -9,3 +9,11 @@ from retrievers.hybrid import hybrid_retriever as hybrid
 
 def main():
     pass
+
+def retrieval(type):
+    if type == "dense":
+        dense()
+    elif type == "sparse":
+        sparse()
+    else:
+        hybrid()
