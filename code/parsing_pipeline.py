@@ -5,8 +5,8 @@
 # 2. pdf_parser: use downloaded pdf files to convert to plain text (put in a folder)
 # 3. document chunking
 # 4. embedding: sentenceBERT
-from html_parser import parse_html_links
-from pdf_parser import convert_pdf_to_plaintext, download_pdfs
+from parsers.html_parser import parse_html_links
+from parsers.pdf_parser import convert_pdf_to_plaintext, download_pdfs
 
 
 def main():
@@ -20,7 +20,8 @@ def main():
     pdfs = download_pdfs(pdf_links)
     convert_pdf_to_plaintext(pdfs)
     # chunk docs
-    # embed docs
+    # embed docs + store in vector database
+    # pass off to retriever
 
 if __name__ == "__main__":
     main()
