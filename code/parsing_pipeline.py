@@ -6,7 +6,7 @@
 # 3. document chunking
 # 4. embedding: sentenceBERT
 from html_parser import parse_html_links
-from pdf_parser import convert_pdf_to_plaintext
+from pdf_parser import convert_pdf_to_plaintext, download_pdfs
 
 
 def main():
@@ -14,5 +14,13 @@ def main():
     with open("pdfs_and_html_links/html_links_parent.txt", "r", encoding="utf-8") as f:
         for line in f:
             links.append(line.strip('\n'))
+    # parse links + html pages
     pdf_links = parse_html_links(links)
-    convert_pdf_to_plaintext(pdf_links)
+    # parse pdfs
+    pdfs = download_pdfs(pdf_links)
+    convert_pdf_to_plaintext(pdfs)
+    # chunk docs
+    # embed docs
+
+if __name__ == "__main__":
+    main()
