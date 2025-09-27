@@ -5,3 +5,14 @@
 # 2. pdf_parser: use downloaded pdf files to convert to plain text (put in a folder)
 # 3. document chunking
 # 4. embedding: sentenceBERT
+from html_parser import parse_html_links
+from pdf_parser import convert_pdf_to_plaintext
+
+
+def main():
+    links = []
+    with open("pdfs_and_html_links/html_links_parent.txt", "r", encoding="utf-8") as f:
+        for line in f:
+            links.append(line.strip('\n'))
+    pdf_links = parse_html_links(links)
+    convert_pdf_to_plaintext(pdf_links)
