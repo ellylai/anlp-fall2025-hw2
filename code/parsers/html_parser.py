@@ -34,10 +34,14 @@ def validate_links(child_links, base_url, all_links):
             else:
                 htmls.append(link)
         elif link[0] == "/":
-            link = base_url + link[1:]
             n = len(link)
             if link[(n - 3) :] == "pdf":
+                if "pittsburghpa.gov" in base_url:
+                    link = "https://www.pittsburghpa.gov" + link
+                elif "cmu.edu" in base_url:
+                    link = "https://www.cmu.edu" + link
                 pdfs.append(link)
+            link = base_url + link[1:]
             if link.count("/") > (levels+1):
                 continue
             else:
