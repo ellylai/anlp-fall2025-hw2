@@ -15,7 +15,7 @@ def main():
         for line in f:
             links.append(line.strip("\n"))
     # parse links + html pages
-    pdf_links = parse_html_links(links)
+    pdf_links, all_links = parse_html_links(links)
     print(pdf_links)
     # parse pdfs
     convert_pdf_to_plaintext(pdf_links, write=True)
