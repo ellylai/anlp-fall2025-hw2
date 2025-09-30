@@ -11,7 +11,7 @@ def validate_links(child_links, base_url, all_links):
         return pdfs, htmls, all_links
     elif "britannica" in base_url:
         return pdfs, htmls, all_links
-    
+
     for link in child_links:
         if link is None:
             continue
@@ -29,7 +29,7 @@ def validate_links(child_links, base_url, all_links):
             n = len(link)
             if link[(n - 3) :] == "pdf":
                 pdfs.append(link)
-            elif link.count("/") > (levels+1):
+            elif link.count("/") > (levels + 1):
                 continue
             else:
                 htmls.append(link)
@@ -42,7 +42,7 @@ def validate_links(child_links, base_url, all_links):
                     link = "https://www.cmu.edu" + link
                 pdfs.append(link)
             link = base_url + link[1:]
-            if link.count("/") > (levels+1):
+            if link.count("/") > (levels + 1):
                 continue
             else:
                 htmls.append(link)
@@ -56,7 +56,11 @@ def parse_child_links(page_id, child_links):
         html = requests.get(link, timeout=10).text
         soup = BeautifulSoup("<html>" + html + "</html>", "html.parser")
         txt = soup.get_text(separator=" ", strip=True)
-        with open(f"pdfs_and_html_links/html/doc{page_id}-{child_id}.txt", "w", encoding="utf-8") as f:
+        with open(
+            f"pdfs_and_html_links/html/doc{page_id}-{child_id}.txt",
+            "w",
+            encoding="utf-8",
+        ) as f:
             f.write(txt)
         child_id += 1
     print("Child html links parsed.")
@@ -70,13 +74,15 @@ def parse_html_links(parent_links):
         print(link)
         n = len(link)
         if link[(n - 3) :] == "pdf":
-                pdfs.append(link)
-                continue
+            pdfs.append(link)
+            continue
         all_links.append(link)
         html = requests.get(link, timeout=10).text
         soup = BeautifulSoup("<html>" + html + "</html>", "html.parser")
         txt = soup.get_text(strip=True)
-        with open(f"pdfs_and_html_links/html/doc{page_id}-0.txt", "w", encoding="utf-8") as f:
+        with open(
+            f"pdfs_and_html_links/html/doc{page_id}-0.txt", "w", encoding="utf-8"
+        ) as f:
             f.write(txt)
         child_links = [child_link.get("href") for child_link in soup.find_all("a")]
         pdf_links, html_links, all_links = validate_links(child_links, link, all_links)
@@ -85,3 +91,33 @@ def parse_html_links(parent_links):
         page_id += 1
     print("All links parsed. Dumping pdf links.")
     return pdfs, all_links
+
+
+def parse_problematic_links(problem_links):
+    from selenium import webdriver
+
+    driver = webdriver.Safari()
+
+    for i, link in enumerate(problem_links):
+        driver.get(link)
+        html = driver.page_source
+        driver.quit()
+
+        soup = BeautifulSoup("<html>" + html + "</html>", "html.parser")
+        txt = soup.get_text(strip=True)
+
+        with open(
+            f"pdfs_and_html_links/html/error_doc{i}.txt", "w", encoding="utf-8"
+        ) as f:
+            f.write(txt)
+    print("successfully parsed problematic links with selenium")
+
+
+if __name__ == "__main__":
+    problem_links = []
+    with open(
+        "pdfs_and_html_links/html_links_parent_error.txt", "r", encoding="utf-8"
+    ) as f:
+        for line in f:
+            problem_links.append(line.strip("\n"))
+    parse_problematic_links(problem_links)
