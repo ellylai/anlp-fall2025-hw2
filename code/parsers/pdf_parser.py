@@ -1,3 +1,5 @@
+# Run this file directly with the printed pdf links if requests is timing out while parsing html
+
 from pypdf import PdfReader
 import requests
 from io import BytesIO
