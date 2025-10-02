@@ -2,6 +2,7 @@ import argparse
 from parsing_pipeline import main as doc_parser
 from retrieving_pipeline import retrieval
 from generating_pipeline import reader
+from retrievers.dense import build_database
 
 def terminal_io():
     parser = argparse.ArgumentParser()
@@ -13,6 +14,8 @@ def terminal_io():
 def main():
     retrieval_type, query = terminal_io()
     doc_parser()
+    doc_chunks = None   # TODO: import doc chunks
+    vec_data = build_database(doc_chunks)
     docs = retrieval(query, retrieval_type)
     response = reader(query, docs)
     # TODO: output response

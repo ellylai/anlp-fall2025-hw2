@@ -22,8 +22,6 @@ def main():
     # chunk docs
     chunk_documents("pdfs_and_html_links/pdfs")
     chunk_documents("../pdfs_and_html_links/html")
-    # embed docs + store in vector database
-    # pass off to retriever
 
 
 pdf_links = [

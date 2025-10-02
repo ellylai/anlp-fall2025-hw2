@@ -7,6 +7,16 @@ models, refer to the MTEB Leaderboard) to improve performance. Use FAISS
 You'll need to implement the pipeline for embedding documents, building the FAISS index, and 
 retrieving similar documents for queries.
 '''
+def embedding(docs):
+    pass
 
-def dense_retriever():
+def faiss(embs):
+    pass
+
+def build_database(docs):
+    embeddings = embedding(docs)
+    idxs = faiss(embeddings)
+    return idxs
+
+def dense_retriever(query, data):
     pass
