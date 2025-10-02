@@ -7,16 +7,21 @@ models, refer to the MTEB Leaderboard) to improve performance. Use FAISS
 You'll need to implement the pipeline for embedding documents, building the FAISS index, and 
 retrieving similar documents for queries.
 '''
-def embedding(docs):
-    pass
+from sentence_transformers import SentenceTransformer
 
-def faiss(embs):
+def embedding(encoder, docs):
+    return encoder.encode(docs, convert_to_numpy=True)
+
+def faiss(q_emb, embs):
     pass
 
 def build_database(docs):
-    embeddings = embedding(docs)
+    encoder = SentenceTransformer("all-MiniLM-L6-v2")
+    embeddings = embedding(encoder, docs)
     idxs = faiss(embeddings)
-    return idxs
+    return idxs, encoder
 
-def dense_retriever(query, data):
-    pass
+def dense_retriever(query, data, encoder):
+    q_emb = embedding(encoder, [query])
+    docs = faiss(q_emb, data)
+    return docs
