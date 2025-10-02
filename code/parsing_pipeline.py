@@ -7,7 +7,7 @@
 # 4. embedding: sentenceBERT
 from parsers.html_parser import parse_html_links
 from parsers.pdf_parser import convert_pdf_to_plaintext
-
+from doc_chunking import chunk_documents
 
 def main():
     links = []
@@ -20,6 +20,8 @@ def main():
     # parse pdfs
     convert_pdf_to_plaintext(pdf_links, write=True)
     # chunk docs
+    chunk_documents("pdfs_and_html_links/pdfs")
+    chunk_documents("../pdfs_and_html_links/html")
     # embed docs + store in vector database
     # pass off to retriever
 

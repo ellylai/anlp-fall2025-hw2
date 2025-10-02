@@ -13,19 +13,12 @@ def retrieve(query):
     sparse = sparse_retriever(query)
     return dense, sparse
 
-def get_ranking(doc, type):
-    pass
-
 def rrf_fusion(d_rank, s_rank, k):
     docs = {}
-    for d, rd in d_rank:
-        if (d, rs) in s_rank:
-            docs[d] = 1.0 / (k + rd) + 1.0 / (k + rs)
-        else:
-            docs[d] = 1.0 / (k + rd) + 1.0 / (k + get_ranking(d, "sparse"))
-    for d, rs in s_rank:
-        if d not in docs:
-            docs[d] = 1.0 / (k + rs) + 1.0 / (k + get_ranking(d, "dense"))
+    for d in d_rank.keys():
+        if d in s_rank:
+            docs[d] = 1.0 / (k + d_rank[d]) + 1.0 / (k + s_rank[d])
+        # Note: docs not in both retrievals omitted -- maybe need to change later
     return docs
 
 def rankings(scores):
