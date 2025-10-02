@@ -20,7 +20,7 @@ def main():
     vec_data = build_database(doc_chunks)
     responses = []
     for query in queries:
-        docs = retrieval(query, retrieval_type)
+        docs = retrieval(retrieval_type, query, vec_data)
         response = reader(query, docs)
         responses.append(response)
     write_outfile(outfile, responses)

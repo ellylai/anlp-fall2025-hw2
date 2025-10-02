@@ -10,11 +10,11 @@ from retrievers.hybrid import hybrid_retriever as hybrid
 def main():
     pass
 
-def retrieval(type, query):
+def retrieval(type, query, data):
     if type == "dense":
-        data = None # TODO: get appropriate database
-        dense(query, data)
+        docs = dense(query, data)
     elif type == "sparse":
-        sparse(query)
+        docs = sparse(query)
     else:
-        hybrid(query)
+        docs = hybrid(query)
+    return docs
