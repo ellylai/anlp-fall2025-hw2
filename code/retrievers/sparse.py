@@ -7,22 +7,38 @@ Citation: used https://github.com/xhluca/bm25s
 
 import bm25s
 
-# INCOMPLETE
-
 
 def sparse_retriever_corpus(corpus):
     corpus_tokens = bm25s.tokenize(corpus, stopwords="en")
     retriever = bm25s.BM25()
     retriever.index(corpus_tokens)
-    retriever.save("retriever")
+    retriever.save("retriever_index", corpus=corpus)
 
 
-def sparse_retriever(query):
-    query_tokens = bm25s.tokenize(query)
+def sparse_retriever(query, k=2):
+    query_tokens = bm25s.tokenize(query, stopwords="en")
+    retriever = bm25s.BM25.load("retriever_index", load_corpus=True)
 
-    retriever = bm25s.BM25.load("retriever", load_corpus=True)
+    results, scores = retriever.retrieve(query_tokens, k=k)
+    print(results, scores)
+    return results
 
-    results, scores = retriever.retrieve(query_tokens, k=2)
-    for i in range(results.shape[1]):
-        doc, score = results[0, i], scores[0, i]
-        print(f"Rank {i+1} (score: {score:.2f}): {doc}")
+
+def load_corpus_from_file(path):
+    with open(path, "r", encoding="utf-8") as f:
+        corpus = [line.strip() for line in f if line.strip()]
+    return corpus
+
+
+if __name__ == "__main__":
+    print("TEST SPARSE RETRIEVER: embedding with sparse_retriever")
+
+    # run this from anlp-fall2025-hw2 folder
+    # docs = load_corpus_from_file(path="data/all_chunks.txt")
+    # sparse_retriever_corpus(docs)
+
+    query = "What year was CMU founded?"
+    sparse_retriever(query, k=2)
+
+    query = "What is Pittsburgh's football team named?"
+    sparse_retriever(query, k=2)
