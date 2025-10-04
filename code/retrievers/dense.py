@@ -11,6 +11,11 @@ from sentence_transformers import SentenceTransformer
 import faiss
 from sparse import load_corpus_from_file
 
+def read_queries():
+    with open("test_questions/test30.txt", "r", encoding="utf-8") as f:
+        content = [line.strip() for line in f if line.strip()]
+    return content
+
 def embedding(encoder, docs):
     embs = encoder.encode(docs, convert_to_numpy=True).astype("float32")
     ids = {i: docs[i] for i in range(len(docs))}
@@ -51,15 +56,10 @@ if __name__ == "__main__":
 
     # run this from anlp-fall2025-hw2 folder
     print("Processing data")
-    ids, idxs, encoder = process_data(path="data/all_chunks_size30.txt")
-    # sparse_retriever_corpus(docs)
+    ids, idxs, encoder = process_data(path="data/all_chunks_size200.txt")
+    queries = read_queries()
 
-    query = "What year was CMU founded?"
-    d, i = dense_retriever(query, idxs, encoder, k=2)
-    print("i", i[0])
-    print(vec_to_text(i[0], ids))
-
-    query = "What is Pittsburgh's football team named?"
-    d, i = dense_retriever(query, idxs, encoder, k=2)
-    print("i", i[0])
-    print(vec_to_text(i[0], ids))
+    print("Processing queries")
+    for query in queries:
+        d, i = dense_retriever(query, idxs, encoder, k=2)
+        print(vec_to_text(i[0], ids))
