@@ -40,26 +40,26 @@ def search_data(q_emb, data, k):
     docs = data.search(q_emb, k)
     return docs
 
-def dense_retriever(query, data, encoder, k):
-    q_emb = encoder.encode([query], convert_to_numpy=True).astype("float32")
-    docs = search_data(q_emb, data, k)
-    return docs
-
 def vec_to_text(v, ids):
     docs = []
     for i in v:
         docs.append(ids[i])
     return docs
 
+def dense_retriever(query, data, encoder, ids, k):
+    q_emb = encoder.encode([query], convert_to_numpy=True).astype("float32")
+    ds, idxs = search_data(q_emb, data, k)
+    return vec_to_text(idxs, ids)
+
 if __name__ == "__main__":
     print("TEST DENSE RETRIEVER: embedding with dense_retriever")
 
     # run this from anlp-fall2025-hw2 folder
     print("Processing data")
-    ids, idxs, encoder = process_data(path="data/all_chunks_size200.txt")
+    ids, idxs, encoder = process_data(path="data/all_chunks_size30.txt")
     queries = read_queries()
 
     print("Processing queries")
     for query in queries:
-        d, i = dense_retriever(query, idxs, encoder, k=2)
-        print(vec_to_text(i[0], ids))
+        docs = dense_retriever(query, idxs, encoder, ids, k=2)
+        print(docs)
