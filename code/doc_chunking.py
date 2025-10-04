@@ -4,7 +4,7 @@
 import os
 
 
-def chunk_documents(data_folder):
+def chunk_documents(data_folder, chunk_size):
     documents = []
 
     for file_name in os.listdir(data_folder):
@@ -26,7 +26,7 @@ def chunk_documents(data_folder):
 
     all_chunks = []
     for doc in documents:
-        chunks = chunk_text(doc, chunk_size=100, overlap=10)
+        chunks = chunk_text(doc, chunk_size=chunk_size, overlap=10)
         all_chunks.extend(chunks)
 
     print(f"Created {len(all_chunks)} chunks")
@@ -35,7 +35,9 @@ def chunk_documents(data_folder):
 
     chunk_folder = "data"
     folder_name = data_folder.split("/")[-1]
-    chunk_file_path = os.path.join(chunk_folder, f"all_chunks_{folder_name}.txt")
+    chunk_file_path = os.path.join(
+        chunk_folder, f"all_chunks_{folder_name}_size{chunk_size}.txt"
+    )
 
     # Save chunks
     with open(chunk_file_path, "w", encoding="utf-8") as f:
@@ -46,5 +48,6 @@ def chunk_documents(data_folder):
 
 
 if __name__ == "__main__":
-    # chunk_documents("../pdfs_and_html_links/html")
-    chunk_documents("pdfs_and_html_links/pdfs")
+    for chunk_size in [30, 50, 100, 150, 200]:
+        chunk_documents("pdfs_and_html_links/pdfs", chunk_size)
+        chunk_documents("pdfs_and_html_links/html", chunk_size)
