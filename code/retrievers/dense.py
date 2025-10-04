@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     # run this from anlp-fall2025-hw2 folder
     print("Processing data")
-    ids, idxs, encoder = process_data(path="data/all_chunks.txt")
+    ids, idxs, encoder = process_data(path="data/all_chunks_size30.txt")
     # sparse_retriever_corpus(docs)
 
     query = "What year was CMU founded?"
