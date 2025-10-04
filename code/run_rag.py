@@ -26,4 +26,4 @@ def main():
         response = reader(query, docs)
         responses.append(response)
     write_outfile(outfile, responses)
-    evaluation(responses, ref_responses)
+    evaluate(responses, ref_responses)
