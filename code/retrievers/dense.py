@@ -47,7 +47,7 @@ def vec_to_text(v, ids):
     return docs
 
 if __name__ == "__main__":
-    print("TEST DENSE RETRIEVER: embedding with sparse_retriever")
+    print("TEST DENSE RETRIEVER: embedding with dense_retriever")
 
     # run this from anlp-fall2025-hw2 folder
     print("Processing data")
